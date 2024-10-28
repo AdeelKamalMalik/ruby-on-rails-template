@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   get 'profile/edit', to: 'profiles#edit', as: :edit_profile
   patch 'profile', to: 'profiles#update'
 
+  resources :projects  # This line creates RESTful routes for projects
   root "application#home"
 end
