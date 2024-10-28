@@ -1,0 +1,34 @@
+<h1 class="text-2xl font-bold text-center mb-4">Edit Profile</h1>
+
+<div class="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  <%= form_with model: @user, url: profile_path, local: true do |f| %>
+    <div class="mb-4">
+      <%= f.label :name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.text_field :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :email, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.email_field :email, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :password, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.password_field :password, autocomplete: "new-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      <small class="text-gray-600">Leave blank if you don't want to change it.</small>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :password_confirmation, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+    </div>
+
+    <div class="flex items-center justify-between">
+      <%= f.submit "Update Profile", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200 focus:outline-none focus:shadow-outline" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="max-w-md mx-auto mt-4">
+  <%= link_to 'Back', profile_path, class: "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition duration-200" %>
+</div>
