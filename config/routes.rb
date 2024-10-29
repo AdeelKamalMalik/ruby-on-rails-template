@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get :accept_invite # Route for accepting invitations
     end
     resources :tasks
+    resources :faqs
   end
   root "application#home"
 end
