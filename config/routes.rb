@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   patch 'profile', to: 'profiles#update'
 
   resources :projects do
+    member do
+      post :invite # Route for inviting users
+      get :accept_invite # Route for accepting invitations
+    end
     resources :tasks
   end
   root "application#home"

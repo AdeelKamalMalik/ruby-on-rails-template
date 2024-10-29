@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: %i[show edit update destroy]
 
   def index
-    @projects = current_user.projects
+    @projects = current_user.projects + current_user.invited_projects
   end
 
   def show; end
@@ -36,13 +36,52 @@ class ProjectsController < ApplicationController
     redirect_to projects_path, notice: 'Project was successfully destroyed.'
   end
 
+  def invite
+    @project = current_user.projects.find(params[:id])
+    invited_user = User.find_by(email: params[:email])
+    if invited_user
+      send_invitation_email(invited_user)
+      flash[:notice] = "Invitation sent to #{invited_user.email}."
+    else
+      flash[:alert] = "User does not exist. Please create an account."
+    end
+    redirect_to @project
+  end
+
+  def accept_invite
+    if user_signed_in?
+      @project = Project.find_by(token: params[:token])
+      if @project
+        @project.users << current_user unless @project.users.include?(current_user)
+        flash[:notice] = "You have been added to the project."
+        redirect_to project_path(@project)
+      else
+        flash[:alert] = "Invalid invitation."
+        redirect_to root_path
+      end
+    else
+      flash[:alert] = "You need to log in to accept the invitation."
+      redirect_to new_user_session_path
+    end
+  end
+
   private
 
   def set_project
-    @project = current_user.projects.find(params[:id])
+    @project = Project.includes(:users).find(params[:id])
+    unless @project.user == current_user || @project.users.include?(current_user)
+      flash[:alert] = "You do not have access to this project."
+      redirect_to projects_path
+    end
   end
 
   def project_params
     params.require(:project).permit(:name, :description)
+  end
+
+  def send_invitation_email(user)
+    token = SecureRandom.hex(10)
+    @project.update(token: token)
+    InvitationMailer.invite_user(user, @project).deliver_now
   end
 end

@@ -4,7 +4,9 @@
       <div class="flex">
         <div class="hidden md:flex items-center space-x-4">
           <%= link_to "Home", root_path, class: "text-lg font-bold text-blue-500" %>
-          <%= link_to "Projects", projects_path, class: "text-lg font-bold text-blue-500" %>
+          <% if user_signed_in? %>
+            <%= link_to "Projects", projects_path, class: "text-lg font-bold text-blue-500" %>
+          <% end %>
         </div>
       </div>
 
