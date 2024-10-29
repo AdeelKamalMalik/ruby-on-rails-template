@@ -1,6 +1,7 @@
 <nav class="bg-white shadow-md mb-2">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16">
+      <!-- Left Links -->
       <div class="flex">
         <div class="hidden md:flex items-center space-x-4">
           <%= link_to "Home", root_path, class: "text-lg font-bold text-blue-500" %>
@@ -9,9 +10,45 @@
           <% end %>
         </div>
       </div>
-
+      <!-- Right Profile and Notifications -->
       <div class="hidden md:flex items-center relative">
         <% if user_signed_in? %>
+          <div class="relative mr-4">
+            <button class="relative text-gray-800 hover:text-blue-500 focus:outline-none mx-4" id="notifications-button">
+              <i class="fas fa-bell"></i>
+              <% if current_user.notifications.unread.any? %>
+                <span class="absolute top-0 right-0 inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+              <% end %>
+            </button>
+            <!-- Notifications Dropdown -->
+            <div class="absolute right-0 hidden mt-1 w-80 bg-white shadow-lg rounded-md z-10" id="notifications-dropdown">
+              <div class="py-2" style="width: 300px;">
+                <% if current_user.notifications.any? %>
+                  <% current_user.notifications.each do |notification| %>
+                    <div class="<%= notification.read_at ? 'p-4 mb-2 bg-gray-50' : 'p-4 mb-2 bg-blue-100 shadow-lg' %> rounded-lg hover:shadow-xl transition-shadow duration-300">
+                      <%= link_to (if notification.params[:task].present? && notification.params[:project].present?
+                          "#{notification.params[:task][:name]} was created in #{notification.params[:project][:name]} project's tasks"
+                        elsif notification.params[:faq].present? && notification.params[:project].present?
+                          "#{notification.params[:faq][:question]} was created in #{notification.params[:project][:name]} project's FAQs"
+                        elsif notification.params[:user].present? && notification.params[:project].present?
+                          "#{notification.params[:user][:name]} accepted your invitation"
+                        else
+                          "Notification data is missing."
+                        end),
+                        read_notification_path(notification),
+                        method: :post,
+                        data: { turbo_method: :post },
+                        class: "text-gray-700 text-sm font-semibold" %>
+                    </div>
+                  <% end %>
+                <% else %>
+                  <p class="px-4 py-2 text-sm text-gray-500">No new notifications.</p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Dropdown -->
           <div class="relative">
             <button class="flex items-center text-gray-800 hover:text-blue-500 focus:outline-none" id="profile-button">
               <span>Profile</span>
@@ -19,8 +56,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
             </button>
-            <div class="absolute right-0 hidden mt-1 w-48 bg-white shadow-lg rounded-md z-10" id="dropdown-menu">
-              <div class="py-1" role="menu">
+            <div class="absolute right-0 hidden mt-1 w-48 bg-white shadow-lg rounded-md z-10" id="profile-dropdown">
+              <div class="py-1">
                 <%= link_to 'Profile', profile_path, class: "block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100" %>
                 <%= link_to 'Logout', destroy_user_session_path, data: { "turbo-method": :delete }, class: "block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100" %>
               </div>
@@ -32,6 +69,7 @@
         <% end %>
       </div>
 
+      <!-- Mobile Menu Button -->
       <div class="flex md:hidden">
         <button class="text-gray-800 hover:text-blue-500 focus:outline-none" id="mobile-menu-button">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

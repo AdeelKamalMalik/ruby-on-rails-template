@@ -71,4 +71,5 @@ group :test do
 end
 gem 'tailwindcss-rails'
 gem 'devise'
-
+gem 'pry'
+gem "noticed", "~> 2.4"

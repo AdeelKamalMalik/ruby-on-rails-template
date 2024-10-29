@@ -13,4 +13,9 @@ Rails.application.routes.draw do
     resources :faqs
   end
   root "application#home"
+  resources :notifications do
+    member do
+      post 'read'  # This creates a POST route for marking notifications as read
+    end
+  end
 end

@@ -16,6 +16,9 @@ class FaqsController < ApplicationController
   def create
     @faq = @project.faqs.build(faq_params)
     if @faq.save
+      @project.users.each do |user|
+        FaqCreatedNotifier.with(faq: @faq, project: @project).deliver_later(user)
+      end
       redirect_to project_faq_path(@project, @faq), notice: 'FAQ was successfully created.'
     else
       render :new, alert: 'Failed to create FAQ.'

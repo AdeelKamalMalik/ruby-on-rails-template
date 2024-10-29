@@ -13,6 +13,9 @@ class TasksController < ApplicationController
   def create
     @task = @project.tasks.build(task_params)
     if @task.save
+      @project.users.each do |user|
+        TaskCreatedNotifier.with(task: @task, project: @project).deliver_later(user)
+      end
       redirect_to project_tasks_path(@project), notice: 'Task was successfully created.'
     else
       render :new

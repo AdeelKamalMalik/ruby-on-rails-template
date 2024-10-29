@@ -43,7 +43,7 @@ class ProjectsController < ApplicationController
       send_invitation_email(invited_user)
       flash[:notice] = "Invitation sent to #{invited_user.email}."
     else
-      flash[:alert] = "User does not exist. Please create an account."
+      flash[:alert] = 'User does not exist. Please create an account.'
     end
     redirect_to @project
   end
@@ -53,14 +53,16 @@ class ProjectsController < ApplicationController
       @project = Project.find_by(token: params[:token])
       if @project
         @project.users << current_user unless @project.users.include?(current_user)
-        flash[:notice] = "You have been added to the project."
+        @project.users << @project.user unless @project.users.include?(@project.user)
+        AcceptInvitationNotifier.with(user: { name: current_user.name }, project: { name: @project.name }).deliver_later(@project.user)
+        flash[:notice] = 'You have been added to the project.'
         redirect_to project_path(@project)
       else
-        flash[:alert] = "Invalid invitation."
+        flash[:alert] = 'Invalid invitation.'
         redirect_to root_path
       end
     else
-      flash[:alert] = "You need to log in to accept the invitation."
+      flash[:alert] = 'You need to log in to accept the invitation.'
       redirect_to new_user_session_path
     end
   end
@@ -70,7 +72,7 @@ class ProjectsController < ApplicationController
   def set_project
     @project = Project.includes(:users).find(params[:id])
     unless @project.user == current_user || @project.users.include?(current_user)
-      flash[:alert] = "You do not have access to this project."
+      flash[:alert] = 'You do not have access to this project.'
       redirect_to projects_path
     end
   end
