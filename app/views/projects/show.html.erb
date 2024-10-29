@@ -11,9 +11,11 @@
 
   <!-- Button to invite user -->
   <div class="flex justify-center mb-4">
-    <button id="invite-button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded transition duration-200">
-      Invite User
-    </button>
+    <% if current_user == @project.user %>
+      <button id="invite-button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded transition duration-200">
+        Invite User
+      </button>
+    <% end %>
   </div>
 
   <!-- Hidden Email Input Field -->
