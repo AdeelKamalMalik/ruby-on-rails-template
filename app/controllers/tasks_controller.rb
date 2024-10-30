@@ -14,9 +14,6 @@ class TasksController < ApplicationController
     @task = @project.tasks.build(task_params)
     respond_to do |format|
       if @task.save
-        @project.users.each do |user|
-          TaskCreatedNotifier.with(task: @task, project: @project).deliver_later(user)
-        end
         format.turbo_stream
       else
         format.html { render :new, status: :unprocessable_entity }

@@ -17,9 +17,6 @@ class FaqsController < ApplicationController
     @faq = @project.faqs.build(faq_params)
     respond_to do |format|
       if @faq.save
-        @project.users.each do |user|
-          FaqCreatedNotifier.with(faq: @faq, project: @project).deliver_later(user)
-        end
         format.turbo_stream
       else
         format.html { render :new, status: :unprocessable_entity }
