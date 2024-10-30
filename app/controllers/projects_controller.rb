@@ -14,10 +14,12 @@ class ProjectsController < ApplicationController
 
   def create
     @project = current_user.projects.build(project_params)
-    if @project.save
-      redirect_to @project, notice: 'Project was successfully created.'
-    else
-      render :new
+    respond_to do |format|
+      if @project.save
+        format.turbo_stream
+      else
+        format.html { render :new, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -40,7 +42,7 @@ class ProjectsController < ApplicationController
     @project = current_user.projects.find(params[:id])
     invited_user = User.find_by(email: params[:email])
     if invited_user
-      send_invitation_email(invited_user)
+      @project.send_invitation_email(invited_user)
       flash[:notice] = "Invitation sent to #{invited_user.email}."
     else
       flash[:alert] = 'User does not exist. Please create an account.'
@@ -79,11 +81,5 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:name, :description)
-  end
-
-  def send_invitation_email(user)
-    token = SecureRandom.hex(10)
-    @project.update(token: token)
-    InvitationMailer.invite_user(user, @project).deliver_now
   end
 end

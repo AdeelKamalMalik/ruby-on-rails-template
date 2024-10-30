@@ -9,6 +9,12 @@ class Project < ApplicationRecord
   validates :name, presence: true
   validates :description, presence: true
 
+  def send_invitation_email(user)
+    token = SecureRandom.hex(10)
+    update(token:)
+    InvitationMailer.invite_user(user, self).deliver_now
+  end
+
   private
 
   def generate_invite_token

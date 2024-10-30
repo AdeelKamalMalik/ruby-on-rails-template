@@ -12,7 +12,7 @@
   </div>
 
   <div class="flex justify-between items-center mt-6">
-    <div class="flex space-x-4"> <!-- Flex container for buttons with space between -->
+    <div class="flex space-x-4">
       <%= link_to 'Edit', edit_project_faq_path(@project, @faq), class: "bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded transition duration-200" %>
       <%= link_to 'Delete', project_faq_path(@project, @faq), data: { "turbo-method": :delete }, style: "background-color: red; color: white; padding: 8px; border-radius: 4px;"%>
     </div>
