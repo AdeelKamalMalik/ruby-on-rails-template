@@ -12,13 +12,15 @@ class TasksController < ApplicationController
 
   def create
     @task = @project.tasks.build(task_params)
-    if @task.save
-      @project.users.each do |user|
-        TaskCreatedNotifier.with(task: @task, project: @project).deliver_later(user)
+    respond_to do |format|
+      if @task.save
+        @project.users.each do |user|
+          TaskCreatedNotifier.with(task: @task, project: @project).deliver_later(user)
+        end
+        format.turbo_stream
+      else
+        format.html { render :new, status: :unprocessable_entity }
       end
-      redirect_to project_tasks_path(@project), notice: 'Task was successfully created.'
-    else
-      render :new
     end
   end
 
@@ -26,7 +28,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      redirect_to project_tasks_path(@project), notice: 'Task was successfully updated.'
+      redirect_to project_task_path(@project, @task), notice: 'Task was successfully updated.'
     else
       render :edit
     end

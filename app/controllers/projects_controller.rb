@@ -14,10 +14,12 @@ class ProjectsController < ApplicationController
 
   def create
     @project = current_user.projects.build(project_params)
-    if @project.save
-      redirect_to @project, notice: 'Project was successfully created.'
-    else
-      render :new
+    respond_to do |format|
+      if @project.save
+        format.turbo_stream
+      else
+        format.html { render :new, status: :unprocessable_entity }
+      end
     end
   end
 
