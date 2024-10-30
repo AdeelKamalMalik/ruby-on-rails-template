@@ -12,11 +12,11 @@
       <%= f.text_area :description, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" %>
     </div>
 
-    <div class="flex justify-between items-center"> <!-- Flex container for buttons -->
-      <div class="flex-1"> <!-- Optional: Add some space before the buttons -->
+    <div class="flex justify-between items-center">
+      <div class="flex-1">
         <%= f.submit "Update Task", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200" %>
       </div>
-      <div class="flex-1 text-right"> <!-- Right-align Back button -->
+      <div class="flex-1 text-right">
         <%= link_to 'Back', project_tasks_path(@project), class: "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition duration-200" %>
       </div>
     </div>

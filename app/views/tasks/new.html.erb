@@ -1,20 +1,20 @@
-<h2 class="text-2xl font-bold mb-6 text-center">New Task for <%= @project.name %></h2> <!-- Centered title with margin -->
+<h2 class="text-2xl font-bold mb-6 text-center">New Task for <%= @project.name %></h2>
 
-<div class="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"> <!-- Card-like container -->
+<div class="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
   <%= form_with model: [@project, @task], local: true do |f| %>
     <div class="mb-4">
-      <%= f.label :name, class: "block text-gray-700 text-sm font-bold mb-2" %> <!-- Styled label -->
-      <%= f.text_field :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" %> <!-- Focus styling -->
+      <%= f.label :name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.text_field :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" %>
     </div>
 
     <div class="mb-4">
-      <%= f.label :description, class: "block text-gray-700 text-sm font-bold mb-2" %> <!-- Styled label -->
-      <%= f.text_area :description, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" %> <!-- Focus styling -->
+      <%= f.label :description, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.text_area :description, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" %>
     </div>
 
-    <div class="flex justify-between mt-4"> <!-- Flex container for buttons -->
-      <%= f.submit "Create Task", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200" %> <!-- Submit button without full width -->
-      <%= link_to 'Back', project_tasks_path(@project), class: "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition duration-200" %> <!-- Back link -->
+    <div class="flex justify-between mt-4">
+      <%= f.submit "Create Task", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200" %>
+      <%= link_to 'Back', project_tasks_path(@project), class: "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition duration-200" %>
     </div>
   <% end %>
 </div>

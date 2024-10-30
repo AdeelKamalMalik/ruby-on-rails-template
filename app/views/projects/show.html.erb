@@ -9,7 +9,6 @@
     <%= link_to 'View Faqs', project_faqs_path(@project), class: "bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-200" %>
   </div>
 
-  <!-- Button to invite user -->
   <div class="flex justify-center mb-4">
     <% if current_user == @project.user %>
       <button id="invite-button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded transition duration-200">
@@ -18,7 +17,6 @@
     <% end %>
   </div>
 
-  <!-- Hidden Email Input Field -->
   <div id="email-input" class="hidden mb-4">
     <%= form_with url: invite_project_path(@project), method: :post, local: true do |f| %>
       <div class="max-w-md mx-auto mb-4">
