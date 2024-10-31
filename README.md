@@ -38,5 +38,5 @@ This is a project management application built with Ruby on Rails. It allows use
 1. **Clone the repository**
 
    ```sh
-   git clone https://github.com/yourusername/your-repo.git
-   cd your-repo
+      git clone git@github.com:AdeelKamalMalik/ruby-on-rails-template.git
+      cd ruby-on-rails-template
