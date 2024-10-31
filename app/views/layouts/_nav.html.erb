@@ -1,3 +1,4 @@
+<!-- app/views/layouts/application.html.erb -->
 <nav class="bg-white shadow-md mb-2">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16">
@@ -14,30 +15,19 @@
           <div class="relative mr-4">
             <button class="relative text-gray-800 hover:text-blue-500 focus:outline-none mx-4" id="notifications-button">
               <i class="fas fa-bell"></i>
-              <% if current_user.notifications.unread.any? %>
-                <span class="absolute top-0 right-0 inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+              <%= turbo_frame_tag "notification_count" do %>
+                <% unread_count = current_user.notifications.unread.count %>
+                <% if unread_count.positive? %>
+                  <span id="notification-count" class="absolute top-0 right-0 inline-block w-5 h-5 bg-red-500 text-white rounded-full text-xs text-center">
+                    <%= unread_count %>
+                  </span>
+                <% end %>
               <% end %>
             </button>
             <div class="absolute right-0 hidden mt-1 w-80 bg-white shadow-lg rounded-md z-10" id="notifications-dropdown">
               <div class="py-2" style="width: 300px;">
                 <% if current_user.notifications.any? %>
-                  <% current_user.notifications.each do |notification| %>
-                    <div class="<%= notification.read_at ? 'p-4 mb-2 bg-gray-50' : 'p-4 mb-2 bg-blue-100 shadow-lg' %> rounded-lg hover:shadow-xl transition-shadow duration-300">
-                      <%= link_to (if notification.params[:task].present? && notification.params[:project].present?
-                          "#{notification.params[:task][:name]} was created in #{notification.params[:project][:name]} project's tasks"
-                        elsif notification.params[:faq].present? && notification.params[:project].present?
-                          "#{notification.params[:faq][:question]} was created in #{notification.params[:project][:name]} project's FAQs"
-                        elsif notification.params[:user].present? && notification.params[:project].present?
-                          "#{notification.params[:user][:name]} accepted your invitation"
-                        else
-                          "Notification data is missing."
-                        end),
-                        read_notification_path(notification),
-                        method: :post,
-                        data: { turbo_method: :post },
-                        class: "text-gray-700 text-sm font-semibold" %>
-                    </div>
-                  <% end %>
+                  <%= render 'layouts/notifications' %>
                 <% else %>
                   <p class="px-4 py-2 text-sm text-gray-500">No new notifications.</p>
                 <% end %>

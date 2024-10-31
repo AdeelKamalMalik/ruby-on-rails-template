@@ -1,0 +1,17 @@
+<% current_user.notifications.each do |notification| %>
+  <div class="<%= notification.read_at ? 'p-4 mb-2 bg-gray-50' : 'p-4 mb-2 bg-blue-100 shadow-lg' %> rounded-lg hover:shadow-xl transition-shadow duration-300">
+    <%= link_to (if notification.params[:task].present? && notification.params[:project].present?
+        "#{notification.params[:task][:name]} was created in #{notification.params[:project][:name]} project's tasks"
+      elsif notification.params[:faq].present? && notification.params[:project].present?
+        "#{notification.params[:faq][:question]} was created in #{notification.params[:project][:name]} project's FAQs"
+      elsif notification.params[:user].present? && notification.params[:project].present?
+        "#{notification.params[:user][:name]} accepted your invitation"
+      else
+        "Notification data is missing."
+      end),
+      read_notification_path(notification),
+      method: :post,
+      data: { turbo_method: :post },
+      class: "text-gray-700 text-sm font-semibold" %>
+  </div>
+<% end %>

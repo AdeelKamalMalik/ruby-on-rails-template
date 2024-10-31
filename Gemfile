@@ -73,3 +73,4 @@ gem 'tailwindcss-rails'
 gem 'devise'
 gem 'pry'
 gem "noticed", "~> 2.4"
+gem 'turbo-rails'
